@@ -1,4 +1,4 @@
-package com.giraone.measure.rules;
+package com.giraone.rules;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

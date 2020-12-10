@@ -1,4 +1,4 @@
-package com.giraone.measure.rules;
+package com.giraone.rules;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;

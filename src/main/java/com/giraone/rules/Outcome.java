@@ -1,4 +1,4 @@
-package com.giraone.measure.rules;
+package com.giraone.rules;
 
 /**
  * Outcome is the tuple of input facts and outcome results.
