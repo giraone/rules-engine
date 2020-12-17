@@ -164,6 +164,7 @@ class RuleBookTest {
                 .when(facts -> !facts.mammal)
                 .thenGroupRules(group -> group
                     .addRule(new Rule<AnimalFacts, Result>()
+                        .whenDescription("true")
                         .when(facts -> true)
                         .thenDescription("Stop processing and conclude, that the animal does not give milk.")
                         .thenStopWith(outcome -> outcome.result.addConclusion("A " + outcome.facts.animalName + " does not produce milk."))
