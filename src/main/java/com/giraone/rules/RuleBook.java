@@ -25,19 +25,20 @@ public class RuleBook<F, R> {
                                       BiConsumer<String,Boolean> logWhen,
                                       BiConsumer<String,Boolean> logThen) {
 
-        final Outcome<F, R> outcome = new Outcome<>(facts, result);
-        applyOnFacts(outcome, facts, result, logWhen, logThen);
+        final Outcome<F, R> outcome = new Outcome<>(facts, result); // outcome is used globally
+        final AtomicBoolean stopped = new AtomicBoolean(false); // stopped work globally
+        applyOnFacts(outcome, stopped, "", facts, result, logWhen, logThen);
         return outcome;
     }
 
     //------------------------------------------------------------------------------------------------------------------
 
     private void applyOnFacts(Outcome<F, R> outcome,
+                              AtomicBoolean stopped,
+                              String parentWhenDescription,
                               F facts, R result,
                               BiConsumer<String,Boolean> logWhen,
                               BiConsumer<String,Boolean> logThen) {
-
-        final AtomicBoolean stopped = new AtomicBoolean(false);
 
         rules.stream()
             .filter(rule -> {
@@ -45,7 +46,7 @@ public class RuleBook<F, R> {
                     return false;
                 }
                 boolean whenResult = rule.whenFunction.test(facts);
-                logWhen.accept(rule.whenDescription, whenResult);
+                logWhen.accept(parentWhenDescription + rule.whenDescription, whenResult);
                 if (whenResult && rule.whenOutcomeFunction != null) {
                     whenResult = rule.whenOutcomeFunction.test(result);
                     logWhen.accept(rule.andWhenOutcomeDescription, whenResult);
@@ -56,7 +57,7 @@ public class RuleBook<F, R> {
                 if (rule.groupedRules != null) {
                     final RuleBook<F,R> ruleBook = new RuleBook<>();
                     rule.groupedRules.accept(ruleBook);
-                    ruleBook.applyOnFacts(outcome, facts, result, logWhen, logThen);
+                    ruleBook.applyOnFacts(outcome, stopped, rule.whenDescription + " AND ", facts, result, logWhen, logThen);
                 } else {
                     final boolean mustStop = rule.thenFunction.test(outcome);
                     logThen.accept(rule.thenDescription, mustStop);
