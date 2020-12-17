@@ -6,7 +6,7 @@
 
   <groupId>com.giraone.rules</groupId>
   <artifactId>rules-engine</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 
   <packaging>jar</packaging>
 
@@ -56,8 +56,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.testSource>${maven.compiler.source}</maven.compiler.testSource>
     <maven.compiler.testTarget>${maven.compiler.target}</maven.compiler.testTarget>
     <java.version>${maven.compiler.source}</java.version>
