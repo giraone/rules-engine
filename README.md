@@ -248,11 +248,13 @@ BiConsumer<String, Boolean> logThen = (description, value) ->
     { if (value) log.debug("\u001b[31m THEN \"{}\" STOPPED\u001b[0m", description); };
 ```
 
-This will output sth. lke
+This will output sth. like
 
-<span style="color:green">WHEN "If there is no weight given?" was false</span>
-<span style="color:yellow">WHEN "If animal is no mammal?" was true</span>
-<span style="color:red">THEN "Stop processing and conclude, that the animal does not give milk.</span>
+```diff
++ WHEN "If there is no weight given?" was false
+! WHEN "If animal is no mammal?" was true
+- THEN "Stop processing and conclude, that the animal does not give milk.
+```
 
 ---
 
