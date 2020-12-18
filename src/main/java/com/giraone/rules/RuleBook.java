@@ -79,8 +79,11 @@ public class RuleBook<F, R> {
                 if (stopped.get()) {
                     return false;
                 }
-                boolean whenResult = rule.whenFactsFunction == null || rule.whenFactsFunction.test(facts);
-                logWhen.accept(parentWhenDescription + rule.whenFactsDescription, whenResult);
+                boolean whenResult = true;
+                if (rule.whenFactsFunction != null) {
+                    whenResult = rule.whenFactsFunction.test(facts);
+                    logWhen.accept(parentWhenDescription + rule.whenFactsDescription, whenResult);
+                }
                 if (whenResult && rule.whenOutcomeFunction != null) {
                     whenResult = rule.whenOutcomeFunction.test(result);
                     logWhen.accept(rule.whenOutcomeDescription, whenResult);
