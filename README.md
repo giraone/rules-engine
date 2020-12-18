@@ -239,6 +239,21 @@ if (log.isDebugEnabled()) {
 log.debug("applyOnFacts result={}", result);
 ```
 
+During development, it can be also useful to use ANSI color codes in the log functions.
+
+```java
+BiConsumer<String, Boolean> logWhen = (description, value) ->
+    log.debug("{} WHEN \"{}\" was {}\u001b[0m", value ? "\u001b[33m" : "\u001b[32m", description, value);
+BiConsumer<String, Boolean> logThen = (description, value) ->
+    { if (value) log.debug("\u001b[31m THEN \"{}\" STOPPED\u001b[0m", description); };
+```
+
+This will output sth. lke
+
+<span style="color:green">WHEN "If there is no weight given?" was false</span>
+<span style="color:yellow">WHEN "If animal is no mammal?" was true</span>
+<span style="color:red">THEN "Stop processing and conclude, that the animal does not give milk.</span>
+
 ---
 
 ## Build

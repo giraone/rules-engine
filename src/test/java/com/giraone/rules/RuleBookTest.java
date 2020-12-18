@@ -102,8 +102,10 @@ class RuleBookTest {
                 .thenProceedWith(outcome -> outcome.result.addConclusion("A " + outcome.facts.animalName + " cannot fly."))
             );
 
-        BiConsumer<String,Boolean> logWhen = (description, r) -> LOGGER.debug("WHEN \"{}\" was {}", description, r);
-        BiConsumer<String,Boolean> logThen = (description, r) -> LOGGER.debug("THEN \"{}\" stop {}", description, r);
+        BiConsumer<String, Boolean> logWhen = (description, value) ->
+            LOGGER.debug("{} WHEN \"{}\" was {}\u001b[0m", value ? "\u001b[32m" : "\u001b[33m", description, value);
+        BiConsumer<String, Boolean> logThen = (description, value) ->
+            { if (value) LOGGER.debug("\u001b[31m THEN \"{}\" STOPPED\u001b[0m", description); };
 
         // act
         Outcome<AnimalFacts, Result> outcome = withLog
