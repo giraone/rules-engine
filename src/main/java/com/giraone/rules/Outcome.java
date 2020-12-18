@@ -1,10 +1,10 @@
 package com.giraone.rules;
 
 /**
- * Outcome is the tuple of input facts and outcome results.
+ * Outcome is the tuple of input facts and output result.
  *
  * @param <F> The input facts class. This can be any Java Pojo.
- * @param <R> The outcome results class. This can be any Java Pojo.
+ * @param <R> The output result class. This can be any Java Pojo.
  */
 public class Outcome<F, R> {
 

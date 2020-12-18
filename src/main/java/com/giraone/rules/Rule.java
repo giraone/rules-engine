@@ -7,14 +7,14 @@ import java.util.function.Predicate;
  * A rule based on facts F with a result outcome R
  *
  * @param <F> The input facts class.
- * @param <R> The outcome result class.
+ * @param <R> The output result class.
  */
 public class Rule<F, R> {
 
-    String whenDescription;
-    String andWhenOutcomeDescription;
+    String whenFactsDescription;
+    String whenOutcomeDescription;
     String thenDescription;
-    Predicate<F> whenFunction;
+    Predicate<F> whenFactsFunction;
     Predicate<R> whenOutcomeFunction;
     Predicate<Outcome<F, R>> thenFunction;
     Consumer<RuleBook<F, R>> groupedRules;
@@ -24,8 +24,8 @@ public class Rule<F, R> {
      * @param description  Description of when clause
      * @return The rule object
      */
-    public Rule<F, R> whenDescription(String description) {
-        this.whenDescription = description;
+    public Rule<F, R> whenFacts(String description) {
+        this.whenFactsDescription = description;
         return this;
     }
 
@@ -34,8 +34,8 @@ public class Rule<F, R> {
      * @param description  Description of and-when-outcome clause
      * @return The rule object
      */
-    public Rule<F, R> andWhenOutcomeDescription(String description) {
-        this.andWhenOutcomeDescription = description;
+    public Rule<F, R> whenOutcome(String description) {
+        this.whenOutcomeDescription = description;
         return this;
     }
 
@@ -44,21 +44,31 @@ public class Rule<F, R> {
      * @param description  Description of when clause
      * @return The rule object
      */
-    public Rule<F, R> thenDescription(String description) {
+    public Rule<F, R> thenStopWith(String description) {
+        this.thenDescription = description;
+        return this;
+    }
+
+    /**
+     * Give the when clause of the rule a description, that is used for debugging.
+     * @param description  Description of when clause
+     * @return The rule object
+     */
+    public Rule<F, R> thenProceedWith(String description) {
         this.thenDescription = description;
         return this;
     }
 
     /**
      * Define the facts condition under which the rule is applied.
-     * @param whenFunction  Condition as a function with the input facts as the only parameter
+     * @param whenFactsFunction  Condition as a function with the input facts as the only parameter
      * @return The rule object
      */
-    public Rule<F, R> when(Predicate<F> whenFunction) {
+    public Rule<F, R> whenFacts(Predicate<F> whenFactsFunction) {
 
-        this.whenFunction = whenFunction;
-        if (this.whenDescription == null) {
-            this.whenDescription = whenFunction.toString();
+        this.whenFactsFunction = whenFactsFunction;
+        if (this.whenFactsDescription == null) {
+            this.whenFactsDescription = whenFactsFunction.toString();
         }
         return this;
     }
@@ -68,11 +78,11 @@ public class Rule<F, R> {
      * @param whenOutcomeFunction  Condition as a function with the outcome as the only parameter
      * @return The rule object
      */
-    public Rule<F, R> andWhenOutcome(Predicate<R> whenOutcomeFunction) {
+    public Rule<F, R> whenOutcome(Predicate<R> whenOutcomeFunction) {
 
         this.whenOutcomeFunction = whenOutcomeFunction;
-        if (this.andWhenOutcomeDescription == null) {
-            this.andWhenOutcomeDescription = whenOutcomeFunction.toString();
+        if (this.whenOutcomeDescription == null) {
+            this.whenOutcomeDescription = whenOutcomeFunction.toString();
         }
         return this;
     }
@@ -80,7 +90,7 @@ public class Rule<F, R> {
     /**
      * Define the function that is applied, when the condition is true.
      * Do NOT stop with rule processing after the function is applied.
-     * @param consumer  The rule's function with input facts and outcome result as the two parameters
+     * @param consumer  The rule's function with input facts and output result as the two parameters
      * @return The rule object
      */
     public Rule<F, R> thenProceedWith(Consumer<Outcome<F, R>> consumer) {
@@ -100,7 +110,7 @@ public class Rule<F, R> {
     /**
      * Define the function that is applied, when the condition is true.
      * Stop with rule processing after the function is applied.
-     * @param consumer  The rule's function with input facts and outcome result as the two parameters
+     * @param consumer  The rule's function with input facts and output result as the two parameters
      * @return The rule object
      */
     public Rule<F, R> thenStopWith(Consumer<Outcome<F, R>> consumer) {
