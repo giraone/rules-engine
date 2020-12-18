@@ -1,14 +1,14 @@
 # Rules Engine
 
 A simple Java based rules engine library based on
-- generics and POJOs for input facts and outcome results
+- generics and POJOs for input facts and output results
 - Java 8 streams
 - functional Java programming with predicates, consumers and functions
 - Java based fluent style rules definitions
 
 The core objects of a rule book (ordered List of rules) are
 - `<F>` The POJO input facts class.
-- `<R>` The POJO outcome result class.
+- `<R>` The POJO output result class.
 
 The core implementation is nothing more than these lines (**logging and grouping of rules is left out**):
 
@@ -43,14 +43,14 @@ A single rule itself is a *when* / *then* pair, where
  * A rule based on facts F with a result outcome R
  *
  * @param <F> The input facts class.
- * @param <R> The outcome result class.
+ * @param <R> The output result class.
  */
 public class Rule<F, R> {
 
   Predicate<F> whenFunction;
   Predicate<Outcome<F, R>> thenFunction;
 
-  public Rule<F, R> when(Predicate<F> whenFunction) {
+  public Rule<F, R> whenFacts(Predicate<F> whenFunction) {
     this.whenFunction = whenFunction;
     return this;
   }
@@ -129,22 +129,22 @@ class RuleBookTest {
 
     RuleBook<AnimalFacts, Result> ruleBook = new RuleBook<AnimalFacts, Result>()
             .addRule(new Rule<AnimalFacts, Result>()
-                    .when(facts -> facts.weightInKg <= 0)
+                    .whenFacts(facts -> facts.weightInKg <= 0)
                     .thenStopWith(outcome -> {
                       outcome.result.addConclusion("A " + outcome.facts.animalName + " cannot be analyzed.");
                       outcome.result.setHint("You must set a positive weight.");
                     })
             )
             .addRule(new Rule<AnimalFacts, Result>()
-                    .when(facts -> !facts.mammal)
+                    .whenFacts(facts -> !facts.mammal)
                     .thenStopWith(outcome -> outcome.result.addConclusion("A " + outcome.facts.animalName + " does not produce milk."))
             )
             .addRule(new Rule<AnimalFacts, Result>()
-                    .when(facts -> facts.mammal && facts.weightInKg > 100000)
+                    .whenFacts(facts -> facts.mammal && facts.weightInKg > 100000)
                     .thenProceedWith(outcome -> outcome.result.addConclusion("A " + outcome.facts.animalName + " must live in water."))
             )
             .addRule(new Rule<AnimalFacts, Result>()
-                    .when(facts -> facts.mammal && facts.weightInKg > 2)
+                    .whenFacts(facts -> facts.mammal && facts.weightInKg > 2)
                     .thenProceedWith(outcome -> outcome.result.addConclusion("A " + outcome.facts.animalName + " cannot fly."))
             );
 
@@ -170,14 +170,14 @@ the condition `facts -> facts.mammal` "forms" the group:
 
 ```java
 .addRule(new Rule<AnimalFacts, Result>()
-    .when(facts -> facts.mammal)
+    .whenFacts(facts -> facts.mammal)
     .thenGroupRules(group -> group
         .addRule(new Rule<AnimalFacts, Result>()
-            .when(facts -> facts.weightInKg > 100000)
+            .whenFacts(facts -> facts.weightInKg > 100000)
             .thenProceedWith(outcome -> outcome.result.addConclusion("A " + outcome.facts.animalName + " must live in water."))
         )
         .addRule(new Rule<AnimalFacts, Result>()
-            .when(facts -> facts.weightInKg > 2)
+            .whenFacts(facts -> facts.weightInKg > 2)
             .thenProceedWith(outcome -> outcome.result.addConclusion("A " + outcome.facts.animalName + " cannot fly."))
         )
     )
@@ -192,32 +192,32 @@ as a condition:
 
 ```java
 .addRule(new Rule<AnimalFacts, Result>()
-  .whenDescription("If animal weights more than 20 tons?")
-  .when(facts -> facts.weightInKg > 20000)
+  .whenFacts("If animal weights more than 20 tons?")
+  .whenFacts(facts -> facts.weightInKg > 20000)
   .thenProceedWith(outcome -> {
     outcome.result.addConclusion("A " + outcome.facts.animalName + " is not a fish.");
     outcome.result.setHint("super-heavy");
   })
 )
 .addRule(new Rule<AnimalFacts, Result>()
-  .whenDescription("If animal is not a mammal?")
-  .when(facts -> !facts.mammal)
-  .andWhenOutcome(outcome -> "super-heavy".equals(outcome.hint))
+  .whenFacts("If animal is not a mammal?")
+  .whenFacts(facts -> !facts.mammal)
+  .whenOutcome(outcome -> "super-heavy".equals(outcome.hint))
   .thenStopWith(outcome -> outcome.result.setConclusion("The weight for " + outcome.facts.animalName + " is wrong!"))
 );
 ```
 
-andWhenOutcome
+whenOutcome
 
 ### Descriptions
 
-For each `then`, `when` and `andWhenOutcome` a descriptive text can be added:
+For each `then`, `when` and `whenOutcome` a descriptive text can be added:
 
 ```java
 .addRule(new Rule<AnimalFacts, Result>()
-    .whenDescription("If mammal weights more than 2kg?")
-    .when(facts -> facts.weightInKg > 2)
-    .thenDescription("Conclude, that the animal cannot fly, because the largest flying mammals are \"flying foxes\" and the largest species of them has less than 1.6kg.")
+    .whenFacts("If mammal weights more than 2kg?")
+    .whenFacts(facts -> facts.weightInKg > 2)
+    .thenProceedWith("Conclude, that the animal cannot fly, because the largest flying mammals are \"flying foxes\" and the largest species of them has less than 1.6kg.")
     .thenProceedWith(outcome -> outcome.result.addConclusion("A " + outcome.facts.animalName + " cannot fly."))
 );
 ```
@@ -243,13 +243,15 @@ log.debug("applyOnFacts result={}", result);
 
 ## Build
 
-- Use JDK 11
+- Use JDK 8+
 - `mvn package`
 
 ## Release Notes
 
-- 1.0.0 (2020-12-17)
+- 1.2.0 (2020-12-18)
+  - "Description" and "when" methods renamed
+- 1.1.0 (2020-12-17)
   - Version with groupedRules
   - Rules class renamed to RuleBook
-- 1.1.0 (2020-12-12)
+- 1.0.0 (2020-12-18)
   - Initial version
