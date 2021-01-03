@@ -265,6 +265,8 @@ This will output sth. like
 
 ## Release Notes
 
+- 1.2.1 (2021-01-03)
+  - First release published to Meven Central
 - 1.2.0 (2020-12-18)
   - "Description" and "when" methods renamed
 - 1.1.0 (2020-12-17)
