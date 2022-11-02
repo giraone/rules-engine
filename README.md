@@ -265,8 +265,11 @@ This will output sth. like
 
 ## Release Notes
 
+- 1.2.2 (2022-11-02)
+  - maven versions plugin added
+  - Upgrade of all dependencies to the latest versions
 - 1.2.1 (2021-01-03)
-  - First release published to Meven Central
+  - First release published to Maven Central
 - 1.2.0 (2020-12-18)
   - "Description" and "when" methods renamed
 - 1.1.0 (2020-12-17)

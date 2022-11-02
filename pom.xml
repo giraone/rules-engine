@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.giraone.rules</groupId>
   <artifactId>rules-engine</artifactId>
-  <version>1.2.1-SNAPSHOT</version>
+  <version>1.2.2-SNAPSHOT</version>
 
   <packaging>jar</packaging>
 
@@ -62,21 +60,22 @@
     <maven.compiler.testTarget>${maven.compiler.target}</maven.compiler.testTarget>
     <java.version>${maven.compiler.source}</java.version>
     <!-- Runtime dependency versions -->
-    <logback.version>1.2.3</logback.version>
-    <log4j-to-slf4j.version>2.12.1</log4j-to-slf4j.version>
+    <logback.version>1.4.4</logback.version>
+    <log4j-to-slf4j.version>2.19.0</log4j-to-slf4j.version>
     <!-- Test dependency versions -->
-    <junit-jupiter-engine.version>5.6.3</junit-jupiter-engine.version>
-    <assertj.version>3.18.1</assertj.version>
+    <junit-jupiter-engine.version>5.9.1</junit-jupiter-engine.version>
+    <assertj.version>3.23.1</assertj.version>
     <!-- Build plugin versions -->
-    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-    <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-    <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+    <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+    <maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-    <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
-    <nexus-staging-plugin.version>1.6.8</nexus-staging-plugin.version>
+    <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+    <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
     <!-- Other setting -->
     <jacoco.reportFolder>${project.build.directory}/jacoco</jacoco.reportFolder>
     <jacoco.utReportFile>${jacoco.reportFolder}/jacoco.exec</jacoco.utReportFile>
@@ -175,6 +174,15 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <!-- Keep versions up-to-date using mvn versions:update-properties && mvn versions:use-latest-versions -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>${versions-maven-plugin.version}</version>
+        <configuration>
+          <rulesUri>file:///${project.basedir}/mvn-versions-rules.xml</rulesUri>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
