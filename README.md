@@ -1,3 +1,9 @@
+[![GitHub license](https://img.shields.io/github/license/giraone/rules-engine)](https://github.com/giraone/rules-engine/blob/master/LICENSE)
+[![Maven Central](https://img.shields.io/badge/Maven%20Central-1.2.2-blue)](https://mvnrepository.com/artifact/com.giraone.rules/rules-engine)
+[![GitHub issues](https://img.shields.io/github/issues/giraone/rules-engine)](https://github.com/giraone/rules-engine/issues)
+[![GitHub stars](https://img.shields.io/github/stars/giraone/rules-engine)](https://github.com/giraone/rules-engine/stargazers)
+[![Platform](https://img.shields.io/badge/platform-jre8%2B-blue)](https://github.com/giraone/rules-engine/pom.xml)
+
 # Rules Engine
 
 A simple Java based rules engine library based on
@@ -11,6 +17,14 @@ The core objects of a rule book (ordered List of rules) are
 - `<R>` The POJO output result class.
 
 The core implementation is nothing more than these lines (**logging and grouping of rules is left out**):
+
+```xml
+    <dependency>
+      <groupId>com.giraone.rules</groupId>
+      <artifactId>rules-engine</artifactId>
+      <version>1.2.2</version>
+    </dependency>
+```
 
 ```java
 public class RuleBook<F, R> {
