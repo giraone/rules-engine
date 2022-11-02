@@ -4,7 +4,7 @@
 
   <groupId>com.giraone.rules</groupId>
   <artifactId>rules-engine</artifactId>
-  <version>1.2.2-SNAPSHOT</version>
+  <version>1.2.2</version>
 
   <packaging>jar</packaging>
 
@@ -38,7 +38,7 @@
     <connection>scm:git:git://github.com/giraone/rules-engine.git</connection>
     <developerConnection>scm:git:git@github.com:giraone/giraone.git</developerConnection>
     <url>https://github.com/giraone/rules-engine.git</url>
-    <tag>HEAD</tag>
+    <tag>rules-engine-1.2.2</tag>
   </scm>
 
   <issueManagement>
